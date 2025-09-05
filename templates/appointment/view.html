@@ -1,0 +1,92 @@
+<!-- templates/appointment/view.html -->
+{% extends "base.html" %} {% block content %}
+<div
+  class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md border border-gray-200"
+>
+  <div class="flex justify-between items-start mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Appointment Details</h1>
+    <span
+      class="px-3 py-1 text-sm rounded-full {% if apt.status == 'Scheduled' %}bg-blue-100 text-blue-800 {% elif apt.status == 'Completed' %}bg-green-100 text-green-800 {% else %}bg-red-100 text-red-800 {% endif %}"
+    >
+      {{ apt.status }}
+    </span>
+  </div>
+
+  <!-- Patient Info -->
+  <div class="bg-gray-50 p-5 rounded-lg mb-6 border">
+    <h2 class="text-xl font-semibold text-gray-700 mb-3">
+      👨‍⚕️ Patient Information
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-600">
+      <div><strong>Name:</strong> {{ apt.patient.name }}</div>
+      <div><strong>Date of Birth:</strong> {{ apt.patient.dob }}</div>
+      <div><strong>Phone:</strong> {{ apt.patient.phone or 'N/A' }}</div>
+      <div><strong>Email:</strong> {{ apt.patient.email or 'N/A' }}</div>
+      <div class="md:col-span-2">
+        <strong>Address:</strong> {{ apt.patient.address or 'N/A' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Doctor Info -->
+  <div class="bg-gray-50 p-5 rounded-lg mb-6 border">
+    <h2 class="text-xl font-semibold text-gray-700 mb-3">
+      🩺 Doctor Information
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-600">
+      <div><strong>Name:</strong> Dr. {{ apt.doctor.name }}</div>
+      <div><strong>Specialty:</strong> {{ apt.doctor.specialty }}</div>
+      <div><strong>Department:</strong> {{ apt.doctor.department }}</div>
+      <div>
+        <strong>Contact:</strong> {{ apt.doctor.phone }} / {{ apt.doctor.email
+        }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Appointment Details -->
+  <div class="bg-blue-50 p-5 rounded-lg mb-6 border border-blue-200">
+    <h2 class="text-xl font-semibold text-blue-700 mb-3">
+      📅 Appointment Details
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-600">
+      <div><strong>ID:</strong> #{{ apt.appointment_id }}</div>
+      <div>
+        <strong>Date:</strong> {{ apt.date_time.strftime('%B %d, %Y') }}
+      </div>
+      <div><strong>Time:</strong> {{ apt.date_time.strftime('%I:%M %p') }}</div>
+      <div><strong>Duration:</strong> 30 minutes</div>
+      <div class="md:col-span-2">
+        <strong>Reason:</strong> {{ apt.reason or 'No reason specified.' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex flex-wrap gap-4 mt-8">
+    <a
+      href="{{ url_for('list_appointments') }}"
+      class="bg-gray-500 text-white px-5 py-2 rounded hover:bg-gray-600"
+    >
+      ← Back to List
+    </a>
+
+    <!--  add edit route  -->
+    <!--
+    <a href="{{ url_for('edit_appointment', apt_id=apt.appointment_id) }}" 
+       class="bg-yellow-500 text-white px-5 py-2 rounded hover:bg-yellow-600">
+      ✏️ Edit
+    </a>
+    -->
+
+    <!-- Add Mark as Completed -->
+    <!--
+    <form method="POST" action="/appointments/{{ apt.appointment_id }}/complete" style="display:inline;">
+      <button type="submit" class="bg-green-500 text-white px-5 py-2 rounded hover:bg-green-600">
+        ✅ Mark Completed
+      </button>
+    </form>
+    -->
+  </div>
+</div>
+{% endblock %}

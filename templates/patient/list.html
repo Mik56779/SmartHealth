@@ -1,0 +1,36 @@
+<!-- templates/patient/list.html -->
+{% extends "base.html" %} {% block content %}
+<h2 class="text-2xl font-semibold mb-4">Patients</h2>
+<a
+  href="{{ url_for('add_patient') }}"
+  class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4 inline-block"
+  >Add Patient</a
+>
+
+<table class="min-w-full bg-white border border-gray-300 mt-4">
+  <thead class="bg-gray-200">
+    <tr>
+      <th class="py-2 px-4 border-b">ID</th>
+      <th class="py-2 px-4 border-b">Name</th>
+      <th class="py-2 px-4 border-b">DOB</th>
+      <th class="py-2 px-4 border-b">Gender</th>
+      <th class="py-2 px-4 border-b">Phone</th>
+      <th class="py-2 px-4 border-b">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in patients %}
+    <tr class="hover:bg-gray-50">
+      <td class="py-2 px-4 border-b">{{ p.patient_id }}</td>
+      <td class="py-2 px-4 border-b">{{ p.name }}</td>
+      <td class="py-2 px-4 border-b">{{ p.dob }}</td>
+      <td class="py-2 px-4 border-b">{{ p.gender }}</td>
+      <td class="py-2 px-4 border-b">{{ p.phone }}</td>
+      <td class="py-2 px-4 border-b">
+        <a href="#" class="text-blue-500 hover:underline">Edit</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

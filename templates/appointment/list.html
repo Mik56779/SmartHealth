@@ -1,0 +1,85 @@
+<!-- templates/appointment/list.html -->
+{% extends "base.html" %} {% block content %}
+<h2 class="text-2xl font-semibold mb-4">Appointments</h2>
+<a
+  href="{{ url_for('add_appointment') }}"
+  class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-4 inline-block"
+  >+ Schedule Appointment</a
+>
+
+<!-- Search (Optional Enhancement) -->
+<div class="mb-4">
+  <input
+    type="text"
+    id="searchAppointments"
+    placeholder="Search appointments..."
+    class="border border-gray-300 p-2 rounded w-full md:w-1/3"
+    oninput="filterAppointments()"
+  />
+</div>
+
+<table
+  class="min-w-full bg-white border border-gray-300 mt-4"
+  id="appointmentsTable"
+>
+  <thead class="bg-gray-200">
+    <tr>
+      <th class="py-2 px-4 border-b">ID</th>
+      <th class="py-2 px-4 border-b">Patient</th>
+      <th class="py-2 px-4 border-b">Doctor</th>
+      <th class="py-2 px-4 border-b">Date & Time</th>
+      <th class="py-2 px-4 border-b">Status</th>
+      <th class="py-2 px-4 border-b">Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for apt in appointments %}
+    <tr class="hover:bg-gray-50">
+      <td class="py-2 px-4 border-b">{{ apt.appointment_id }}</td>
+      <td class="py-2 px-4 border-b">{{ apt.patient.name }}</td>
+      <td class="py-2 px-4 border-b">
+        {{ apt.doctor.name }} ({{ apt.doctor.specialty }})
+      </td>
+      <td class="py-2 px-4 border-b">
+        {{ apt.date_time.strftime('%Y-%m-%d') }}<br />
+        <span class="text-sm text-gray-500"
+          >{{ apt.date_time.strftime('%I:%M %p') }}</span
+        >
+      </td>
+      <td class="py-2 px-4 border-b">
+        <span
+          class="px-2 py-1 text-xs rounded-full {% if apt.status == 'Scheduled' %}bg-blue-100 text-blue-800 {% elif apt.status == 'Completed' %}bg-green-100 text-green-800 {% else %}bg-red-100 text-red-800 {% endif %}"
+        >
+          {{ apt.status }}
+        </span>
+      </td>
+      <td class="py-2 px-4 border-b">{{ apt.reason }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  // Simple client-side search filter
+  function filterAppointments() {
+    const input = document.getElementById("searchAppointments");
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById("appointmentsTable");
+    const tr = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < tr.length; i++) {
+      // skip header
+      const td = tr[i].getElementsByTagName("td");
+      let found = false;
+      for (let j = 1; j < td.length; j++) {
+        // check all columns except ID
+        if (td[j].innerText.toLowerCase().includes(filter)) {
+          found = true;
+          break;
+        }
+      }
+      tr[i].style.display = found ? "" : "none";
+    }
+  }
+</script>
+{% endblock %}

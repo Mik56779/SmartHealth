@@ -1,0 +1,68 @@
+<!-- templates/appointment/form.html -->
+{% extends "base.html" %} {% block content %}
+<h2 class="text-2xl font-semibold mb-4">Schedule Appointment</h2>
+
+<form method="POST" class="bg-white p-6 rounded shadow-md max-w-lg mx-auto">
+  <!-- Patient -->
+  <div class="mb-4">
+    <label class="block text-gray-700">Patient</label>
+    <select
+      name="patient_id"
+      class="w-full border border-gray-300 p-2 rounded"
+      required
+    >
+      <option value="">Select Patient</option>
+      {% for p in patients %}
+      <option value="{{ p.patient_id }}">{{ p.name }} ({{ p.phone }})</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- Doctor -->
+  <div class="mb-4">
+    <label class="block text-gray-700">Doctor</label>
+    <select
+      name="doctor_id"
+      class="w-full border border-gray-300 p-2 rounded"
+      required
+    >
+      <option value="">Select Doctor</option>
+      {% for d in doctors %}
+      <option value="{{ d.doctor_id }}">
+        Dr. {{ d.name }} - {{ d.specialty }} ({{ d.department }})
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- Date & Time -->
+  <div class="mb-4">
+    <label class="block text-gray-700">Date and Time</label>
+    <input
+      type="datetime-local"
+      name="date_time"
+      class="w-full border border-gray-300 p-2 rounded"
+      required
+    />
+  </div>
+
+  <!-- Reason -->
+  <div class="mb-6">
+    <label class="block text-gray-700">Reason for Visit</label>
+    <textarea
+      name="reason"
+      class="w-full border border-gray-300 p-2 rounded"
+      rows="3"
+      placeholder="e.g., Routine checkup, Fever"
+    ></textarea>
+  </div>
+
+  <!-- Submit -->
+  <button
+    type="submit"
+    class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 w-full"
+  >
+    Schedule Appointment
+  </button>
+</form>
+{% endblock %}
